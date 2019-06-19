@@ -1,0 +1,40 @@
+{
+  "name": "lan-discovery",
+  "version": "1.0.0",
+  "description": "Cross-platform local network library to scan lan and determine (using ping and arp)",
+  "author": "Damien Pointier",
+  "license": "MIT",
+  "keywords": [
+    "ping",
+    "arp",
+    "nmap",
+    "ip",
+    "mac",
+    "scan",
+    "network",
+    "hostname",
+    "nslookup",
+    "await",
+    "async"
+  ],
+  "engines": {
+    "node": "8.5.0"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "child-process-promise": "^2.2.1",
+    "cidr-range": "^2.0.0",
+    "internal-ip": "^4.3.0",
+    "ip-cidr": "^2.0.2",
+    "ipaddr.js": "^1.9.0",
+    "net": "^1.0.2",
+    "net-ping": "^1.2.3",
+    "os": "^0.1.1",
+    "ping": "^0.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dap7z/lan-discovery"
+  },
+  "main": "index.js"
+}
