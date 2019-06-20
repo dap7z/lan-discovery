@@ -5,6 +5,8 @@ const Os = require('os');
 const Util = require('util');
 const Exec = require('child_process').exec;
 const ExecPromise = Util.promisify(Exec);
+const Netmask = require('netmask').Netmask;
+
 const Scanner = require('./scanner');
 const ScannerICMP = require('./scanner-icmp');
 const ScannerTCP = require('./scanner-tcp');
@@ -335,55 +337,27 @@ class LanDiscovery extends EventEmitter
      * Return active network informations
      */
     async getDefaultInterface() {
-        // //-- V1
-        // let result = {};
-        // const interfaces = Os.networkInterfaces();
-        // const DefaultGateway = require('default-gateway');
-        // const myGatewayIpV4 = await DefaultGateway['v4']();
-        // const InternalIp = require('internal-ip');
-        // const myInternalIpV4 = await InternalIp.v4();
-        // //We actually cant rely on default-gateway interface name, exemple for 'é' : { gateway: '192.168.1.1', interface: '�' }
-        // //It's more safe to match by corresponding network because windows encode interface name in UTF-16
-        // //(tested on windows 7 french), that's why we use this forEach :
-        // Object.keys(interfaces).forEach(function (interfaceName) {
-        //     let addressArray = interfaces[interfaceName];
-        //     addressArray.forEach( (data) => {
-        //         if(data.address === myInternalIpV4){
-        //             result = {
-        //                 ip_address: data.address,
-        //                 mac_address: data.mac,
-        //                 netmask: data.netmask,
-        //                 family: data.family,
-        //                 internal: data.internal,
-        //                 cidr: data.cidr,
-        //                 name: interfaceName,
-        //                 gateway_ip: myGatewayIpV4.gateway,
-        //             };
-        //             return result;
-        //         }
-        //     });
-        // });
-        // //return empty object if internal-ip not found in networkInterfaces :
-        // return result;
-        // //--
-
-        //-- V2 (more perf because it execute the code only once in a "extented" internal-ip module, renammed default-interface)
         const DefaultInterface = require('./default-interface.js');
         let data = await DefaultInterface.v4();
         if(data === null){
             throw new Error("default gateway cannot be determined");
         }
+
+        //we need cdir notation of the lan, so we translate 192.168.1.1/255.255.255.0 to 192.168.1.1/24
+        //(to remove Netmask dependencie, we might use ipaddr.js plugin function : prefixLengthFromSubnetMask(), but still need a way to determine network address...)
+        let block = new Netmask(data.gateway + '/' + data.netmask);
+
         return {
-            ip_address: data.address,
-            mac_address: data.mac,
-            netmask: data.netmask,
-            family: data.family,
-            internal: data.internal,
-            cidr: data.cidr,
             name: data.name,
+            cidr: data.cidr,
+            ip_address: data.address,
+            mac_address: F.normalizeMAC(data.mac),
+            fullmask: data.netmask,
+            bitmask: block.bitmask,
+            network: block.base,
+            family: data.family,
             gateway_ip: data.gateway,
         };
-        //--
     }
 
 

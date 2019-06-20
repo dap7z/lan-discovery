@@ -12,11 +12,15 @@ $ node test.js
 ### Example
 
 ```javascript
-let LanDiscovery = require('lan-discovery');
+const LanDiscovery = require('lan-discovery');
+const CidrRange = require('cidr-range');
 let discovery = new LanDiscovery({ verbose: false, timeout: 60 });
 discovery.on(LanDiscovery.EVENT_DEVICE_INFOS, (device) => {
 	console.log('--> event '+ LanDiscovery.EVENT_DEVICE_INFOS +' :\n', device);
 });
+
+let myInterface = await discovery.getDefaultInterface();
+let tabIP = CidrRange(myInterface.cidr);
 discovery.startScan({ ipArrayToScan: tabIP });
 ```
 
@@ -107,7 +111,7 @@ This librarie is heavyly inspired from theses modules :
 - use of nodejs ping implementation (net-ping) to keep performance
 - use of ES8 keyword async/await
 - use class and class inheritance
-- use events
+- use of event pattern
 
 ## License
 
