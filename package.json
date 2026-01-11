@@ -18,18 +18,16 @@
     "async"
   ],
   "engines": {
-    "node": "8.5.0"
+    "node": ">=14.0.0"
   },
   "devDependencies": {},
   "dependencies": {
     "child-process-promise": "^2.2.1",
     "cidr-range": "^2.0.0",
-    "internal-ip": "^4.3.0",
-    "ip-cidr": "^2.0.2",
-    "ipaddr.js": "^1.9.0",
-    "net": "^1.0.2",
-    "net-ping": "^1.2.3",
-    "os": "^0.1.1",
+    "default-gateway": "^7.2.2",
+    "ipaddr.js": "^2.3.0",
+    "netmask": "^2.0.2",
+    "net-ping": "^1.2.4",
     "ping": "^0.2.2"
   },
   "repository": {

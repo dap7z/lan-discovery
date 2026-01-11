@@ -43,6 +43,7 @@ function findInterface(gateway) {
 				result = addr;
 				result.gateway = gateway;
 				result.name = name;
+				result.cidr = `${addr.address}/${prefix}`;
 			}
 
 		});
