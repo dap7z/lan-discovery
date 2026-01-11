@@ -25,7 +25,7 @@
 *
 */
 const os = require('os');
-const defaultGateway = require('default-gateway');
+const gatewayDetector = require('./gateway-detector-util');
 const ipaddr = require('ipaddr.js');
 
 function findInterface(gateway) {
@@ -52,17 +52,60 @@ function findInterface(gateway) {
 	return result;
 }
 
+/**
+ * Fallback method to find default interface when gateway cannot be determined
+ * Returns the first non-loopback IPv4 interface
+ */
+function findDefaultInterfaceFallback() {
+	const interfaces = os.networkInterfaces();
+	let result = null;
+
+	// Look for the first non-loopback IPv4 interface
+	Object.keys(interfaces).some(name => {
+		return interfaces[name].some(addr => {
+			if (addr.family === 'IPv4' && !addr.internal) {
+				const prefix = ipaddr.parse(addr.netmask).prefixLengthFromSubnetMask();
+				result = addr;
+				result.gateway = null; // Gateway unknown
+				result.name = name;
+				result.cidr = `${addr.address}/${prefix}`;
+				return true;
+			}
+			return false;
+		});
+	});
+
+	return result;
+}
+
 function promise(family) {
-	return defaultGateway[family]().then(result => {
-		return findInterface(result.gateway) || null;
-	}).catch(() => null);
+	return gatewayDetector[family]()
+		.then(result => {
+			return findInterface(result.gateway) || null;
+		})
+		.catch((err) => {
+			// Silently handle errors from gateway detector
+			// Use fallback method to find default interface
+			if (family === 'v4') {
+				return findDefaultInterfaceFallback();
+			}
+			return null;
+		});
 }
 
 function sync(family) {
 	try {
-		const result = defaultGateway[family].sync();
-		return findInterface(result.gateway) || null;
+		// gateway-detector doesn't support sync, use async with immediate fallback
+		// This maintains compatibility with the existing API
+		if (family === 'v4') {
+			return findDefaultInterfaceFallback();
+		}
+		return null;
 	} catch (err) {
+		// Use fallback method when gateway detector fails
+		if (family === 'v4') {
+			return findDefaultInterfaceFallback();
+		}
 		return null;
 	}
 }
@@ -72,3 +115,4 @@ module.exports.v4 = () => promise('v4');
 
 module.exports.v6.sync = () => sync('v6');
 module.exports.v4.sync = () => sync('v4');
+

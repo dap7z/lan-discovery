@@ -337,7 +337,7 @@ class LanDiscovery extends EventEmitter
      * Return active network informations
      */
     async getDefaultInterface() {
-        const DefaultInterface = require('./default-interface.js');
+        const DefaultInterface = require('./utils/default-interface-util.js');
         let data = await DefaultInterface.v4();
         if(data === null){
             throw new Error("default gateway cannot be determined");
@@ -345,7 +345,9 @@ class LanDiscovery extends EventEmitter
 
         //we need cdir notation of the lan, so we translate 192.168.1.1/255.255.255.0 to 192.168.1.1/24
         //(to remove Netmask dependencie, we might use ipaddr.js plugin function : prefixLengthFromSubnetMask(), but still need a way to determine network address...)
-        let block = new Netmask(data.gateway + '/' + data.netmask);
+        // Use address instead of gateway if gateway is null (fallback case)
+        const networkBase = data.gateway || data.address;
+        let block = new Netmask(networkBase + '/' + data.netmask);
 
         return {
             name: data.name,
@@ -410,4 +412,4 @@ module.exports = LanDiscovery;
 /**
  * Export CIDR range utility function (replacement for cidr-range package)
  */
-module.exports.cidrRange = require('./cidr-range-util');
+module.exports.cidrRange = require('./utils/cidr-range-util');
