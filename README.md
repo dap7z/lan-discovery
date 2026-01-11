@@ -13,14 +13,13 @@ $ node test.js
 
 ```javascript
 const LanDiscovery = require('lan-discovery');
-const CidrRange = LanDiscovery.cidrRange;
 let discovery = new LanDiscovery({ verbose: false, timeout: 60 });
 discovery.on(LanDiscovery.EVENT_DEVICE_INFOS, (device) => {
 	console.log('--> event '+ LanDiscovery.EVENT_DEVICE_INFOS +' :\n', device);
 });
 
 let myInterface = await discovery.getDefaultInterface();
-let tabIP = CidrRange(myInterface.cidr);
+let tabIP = LanDiscovery.cidrRange(myInterface.cidr);
 discovery.startScan({ ipArrayToScan: tabIP });
 ```
 
