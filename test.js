@@ -1,5 +1,6 @@
 'use strict';
-const CidrRange = require('cidr-range');
+const LanDiscovery = require('./index.js');
+const CidrRange = LanDiscovery.cidrRange;
 
 
 //STRANGE PREVIOUS BUG (FIXED BY require all before any instantiation) :
@@ -9,7 +10,6 @@ const CidrRange = require('cidr-range');
 //scannerICMP.start({ ipArrayToScan: tabIP });   //OK HERE : pass in session.pingHost() and emit device event.
 
 
-const LanDiscovery = require('./index.js');
 let discovery = new LanDiscovery({ verbose: false, timeout: 60 });
 
 async function test(){

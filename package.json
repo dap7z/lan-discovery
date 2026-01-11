@@ -20,14 +20,12 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "devDependencies": {},
   "dependencies": {
-    "child-process-promise": "^2.2.1",
-    "cidr-range": "^2.0.0",
+    "child-process-promise": "^2.1.3",
     "default-gateway": "^7.2.2",
     "ipaddr.js": "^2.3.0",
-    "netmask": "^2.0.2",
     "net-ping": "^1.2.4",
+    "netmask": "^2.0.2",
     "ping": "^0.2.2"
   },
   "repository": {

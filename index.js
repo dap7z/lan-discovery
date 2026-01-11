@@ -406,3 +406,8 @@ class LanDiscovery extends EventEmitter
  * Export class LanDiscovery
  */
 module.exports = LanDiscovery;
+
+/**
+ * Export CIDR range utility function (replacement for cidr-range package)
+ */
+module.exports.cidrRange = require('./cidr-range-util');
