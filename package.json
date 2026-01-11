@@ -24,7 +24,7 @@
     "ipaddr.js": "^2.3.0",
     "net-ping": "^1.2.4",
     "netmask": "^2.0.2",
-    "ping": "^0.2.2"
+    "ping": "^1.0.0"
   },
   "repository": {
     "type": "git",

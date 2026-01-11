@@ -13,8 +13,7 @@ const ScannerTCP = require('./scanner-tcp');
 const EventEmitter = require('events');
 const F = require('./functions');
 
-//const Ping = require('ping'); //(or use another npm packet : ping-bluebird, ping-lite, ...)
-const Ping = require('./node_modules_custom/ping/index.js'); //TODO : MERGE REQUEST "FIX FOR WINDOWS FR"
+const Ping = require('ping');
 
 
 //CONSTANTS
