@@ -1,0 +1,25 @@
+# Test files
+test.js
+*.test.js
+
+# Development files
+.gitignore
+.idea/
+
+# Documentation (README.md will be included by default)
+CONTRIBUTING.md
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+
+# Lock files (optional, but often excluded)
+package-lock.json
+
+# Temporary files
+*.tmp
+*.temp
+
