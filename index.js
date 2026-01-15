@@ -298,11 +298,13 @@ class LanDiscovery extends EventEmitter
     async deviceName(ip) {
         return new Promise((resolve) => {
             F.validateParamIp(ip);
+            // Ensure timeout has a default value to avoid "undefined" in command
+            const timeout = this.timeout || 4;
             let exe = 'host';
-            let flag = '-W='+this.timeout;
+            let flag = '-W='+timeout;
             if(this.osType === OS_WINDOWS){
                 exe = 'nslookup';
-                flag = '-timeout='+this.timeout;
+                flag = '-timeout='+timeout;
             }
             let args = [exe, flag];
             args.push(ip);

@@ -1,14 +1,6 @@
-'use strict';
+﻿'use strict';
 const LanDiscovery = require('./index.js');
 const CidrRange = LanDiscovery.cidrRange;
-
-
-//STRANGE PREVIOUS BUG (FIXED BY require all before any instantiation) :
-//const scannerICMP = require('./node_modules_custom/device-discovery/scanner.js')({ type: 'ICMP' });
-//scannerICMP.start({ ipArray: tabIP }); //NOK HERE (before require child_process.exec again)
-//const LanDiscovery = require('./lan-discovery/index.js');  //child_process.exec conflict ...
-//scannerICMP.start({ ipArrayToScan: tabIP });   //OK HERE : pass in session.pingHost() and emit device event.
-
 
 let discovery = new LanDiscovery({ verbose: false, timeout: 60 });
 
@@ -38,6 +30,7 @@ async function test(){
 	}).on(LanDiscovery.EVENT_SCAN_COMPLETE, (data) => {
 		console.log('--> event '+ LanDiscovery.EVENT_SCAN_COMPLETE +' :\n', data);
 		testDeviceName('192.168.1.1');
+		testDeviceName('10.10.1.254');
 	}).on(LanDiscovery.EVENT_DEVICES_INFOS, (data) => {
         console.log('--> event '+ LanDiscovery.EVENT_DEVICES_INFOS +' :\n', data);
     });

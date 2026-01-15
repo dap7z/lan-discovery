@@ -31,7 +31,7 @@ const ipaddr = require('ipaddr.js');
 function findInterface(gateway) {
 	const interfaces = os.networkInterfaces();
 	const gatewayIp = ipaddr.parse(gateway);
-	let result = {};
+	let result = null;
 
 	// Look for the matching interface in all local interfaces
 	Object.keys(interfaces).some(name => {
@@ -64,12 +64,25 @@ function findDefaultInterfaceFallback() {
 	Object.keys(interfaces).some(name => {
 		return interfaces[name].some(addr => {
 			if (addr.family === 'IPv4' && !addr.internal) {
-				const prefix = ipaddr.parse(addr.netmask).prefixLengthFromSubnetMask();
-				result = addr;
-				result.gateway = null; // Gateway unknown
-				result.name = name;
-				result.cidr = `${addr.address}/${prefix}`;
-				return true;
+				try {
+					// Try to parse netmask if available
+					let prefix = 24; // Default to /24 if netmask is missing
+					if (addr.netmask) {
+						prefix = ipaddr.parse(addr.netmask).prefixLengthFromSubnetMask();
+					}
+					result = addr;
+					result.gateway = null; // Gateway unknown
+					result.name = name;
+					result.cidr = `${addr.address}/${prefix}`;
+					return true;
+				} catch (err) {
+					// If netmask parsing fails, use default /24
+					result = addr;
+					result.gateway = null;
+					result.name = name;
+					result.cidr = `${addr.address}/24`;
+					return true;
+				}
 			}
 			return false;
 		});
