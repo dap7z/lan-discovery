@@ -65,8 +65,8 @@ class LanDiscovery extends EventEmitter
         this.scannerICMP = new ScannerICMP();
         this.scannerTCP = new ScannerTCP();
 
-        //GESTION DES EVENEMENTS
-        //un device repond au ping :
+        // EVENT MANAGEMENT
+        // - one device responds to ping :
         this.scannerICMP.on(Scanner.EVENT_RESPONSE, (ip) => {
             this.emit(EVENT_SCAN_RESPONSE, ip);
             let myPromise = this.deviceInfos(ip);
@@ -75,13 +75,35 @@ class LanDiscovery extends EventEmitter
             })
             this.devicesInfosPromises.push(myPromise);
         });
-        //le scan ping est termine :
+        // - the ping scan is complete :
         this.scannerICMP.on(Scanner.EVENT_COMPLETE, (data) => {
             this.emit(EVENT_SCAN_COMPLETE, data);
-            //on a recuperer les infos de l'ensemble des devices qui ont repondu au ping :
+            // we retrieved information from all devices that responded to the ping.
             Promise.all(this.devicesInfosPromises).then( (devicesArray) => {
                 this.emit(EVENT_DEVICES_INFOS, devicesArray);
             });
+        });
+
+        // Checking the availability of the 'host' command on Linux
+        if(this.osType === OS_LINUX){
+            this._checkHostCommand();
+        }
+    }
+
+    /**
+     * Verify if the command 'host' is available on a linux computer
+     * Show warning if not installed
+     * @private
+     */
+    _checkHostCommand() {
+        // Asynchronous verification without blocking initialization
+        ExecPromise('which host').then(() => {
+            // The command exists, everything is fine.
+        }).catch(() => {
+            // The command is not available, show warning.
+            console.warn('WARNING: Command "host" is not available on this computer. This command is necessary to determine others PCs hostnames');
+            console.warn('   For installing "host" on Raspberry Pi / Debian / Ubuntu, execute :');
+            console.warn('   sudo apt-get update && sudo apt-get install dnsutils');
         });
     }
 	

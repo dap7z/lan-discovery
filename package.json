@@ -1,6 +1,6 @@
-﻿{
+{
   "name": "lan-discovery",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Cross-platform local network library to scan lan and determine device informations (using ping and arp)",
   "author": "Damien Pointier",
   "license": "MIT",
