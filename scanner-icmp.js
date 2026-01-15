@@ -1,4 +1,4 @@
-'use strict'
+﻿'use strict'
 
 const Scanner = require('./scanner');
 const NetPing = require('net-ping')

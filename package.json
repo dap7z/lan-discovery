@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "lan-discovery",
   "version": "1.0.3",
   "description": "Cross-platform local network library to scan lan and determine device informations (using ping and arp)",

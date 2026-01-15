@@ -1,4 +1,4 @@
-'use strict'
+﻿'use strict'
 
 const EventEmitter = require('events')
 const F = require('./functions');

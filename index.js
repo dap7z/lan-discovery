@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 //LIBRARIES
 const Os = require('os');
