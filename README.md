@@ -41,8 +41,8 @@ await discovery.startHybridScan({
 
 **Note**: 
   - **Linux/macOS/Windows**: If no administrator rights, throws an error.
-  - **Linux/macOS**: For ARP broadcast, use scan-arp command (sudo apt install arp-scan)
-  - **Windows**:  For ARP broadcast, use third_party/scan-arp.exe (packed in the application)
+  - **Linux/macOS**: For ARP broadcast, use arp-scan command (sudo apt install arp-scan)
+  - **Windows**:  For ARP broadcast, use third_party/arp-scan.exe (packed in the application)
 
 ### Example - Standard Scan (ICMP on all IPs), more impact on network but no administrator rights required
 
