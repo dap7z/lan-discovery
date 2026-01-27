@@ -73,3 +73,4 @@ typings/
 package-lock\.json
 
 data\.json
+*.GIT_IGNORE

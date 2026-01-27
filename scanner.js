@@ -23,7 +23,10 @@ class Scanner extends EventEmitter {
     }
 
     start({ ipArrayToScan = [] }) {
-        F.validateParamIpArray(ipArrayToScan)
+        // We check the ipArrayToScan parameter, except if we are ScannerARP and working with MAC addresses ;)
+        if (this.constructor.name !== 'ScannerARP') {
+            F.validateParamIpArray(ipArrayToScan)
+        }
         this.ipArrayToScan = ipArrayToScan;
         this.ipArrayResults = [];
         this.timerStart()
@@ -40,12 +43,17 @@ class Scanner extends EventEmitter {
     }
 
     buildScanResult(){
+        let scanCount = this.ipArrayToScan ? this.ipArrayToScan.length : null;
+        if (this.constructor.name !== 'ScannerARP') {
+            scanCount = this.ipArrayResults.length;
+        }
+        
         let executionTimeMS = this.timerDiff()
         return {
             ipArray : this.ipArrayResults,
-            scanCount : this.ipArrayToScan.length,
+            scanCount : scanCount,
             scanTimeMS : executionTimeMS,
-            scanAverageMS : Math.round(executionTimeMS/this.ipArrayToScan.length),
+            scanAverageMS : Math.round(executionTimeMS/scanCount),
         };
     }
 

@@ -1,0 +1,52 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+On windows (https://github.com/QbsuranAlang/arp-scan-windows-/blob/main/arp-scan/Release(x64)/arp-scan.exe) :
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+T:\GITLAB\lan-discovery\third_party (master -> origin)
+λ arp-scan.exe -t 10.10.1.0/24
+Reply that 5C:47:5E:8C:0A:C2 is 10.10.1.1 in 127.013700
+Reply that C8:A6:EF:42:B0:04 is 10.10.1.2 in 1143.078500
+Reply that 98:17:3C:01:E8:F2 is 10.10.1.3 in 1144.815800
+Reply that 06:3D:B4:20:54:CF is 10.10.1.4 in 1147.559500
+Reply that D0:C9:07:A6:A2:48 is 10.10.1.5 in 1143.253000
+Reply that D0:C9:07:03:AB:08 is 10.10.1.6 in 1139.660000
+Reply that 16:E2:7F:58:60:22 is 10.10.1.8 in 1147.926100
+Reply that C0:91:B9:FD:46:6F is 10.10.1.9 in 1149.821000
+Reply that 14:AC:60:02:87:3C is 10.10.1.10 in 1153.588800
+Reply that 70:85:C2:8D:5C:BB is 10.10.1.200 in 15.206300
+Reply that DC:A6:32:38:32:D1 is 10.10.1.211 in 14.979400
+Reply that 00:15:5D:01:15:01 is 10.10.1.213 in 16.353700
+Reply that 00:04:74:24:0A:AA is 10.10.1.231 in 142.916600
+Reply that CC:28:AA:A6:C5:17 is 10.10.1.242 in 0.044600
+Reply that 00:15:5D:01:15:04 is 10.10.1.250 in 12.403800
+Reply that D8:EC:E5:72:9B:02 is 10.10.1.253 in 14.991000
+Reply that 58:1D:D8:F6:21:50 is 10.10.1.254 in 12.873500
+Reply that CC:28:AA:A6:C5:17 is 10.10.1.255 in 0.056300
+Reply that 70:EE:50:5D:CD:8E is 10.10.1.232 in 1152.473600
+Reply that 18:7F:88:C0:2F:96 is 10.10.1.233 in 1148.658900
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+On linux (sudo apt install arp-scan) :
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*******@raspida:~/shared/apps/lan-discovery $ sudo arp-scan --interface=eth0 10.10.1.0/24
+Interface: eth0, type: EN10MB, MAC: dc:a6:32:38:32:d1, IPv4: 10.10.1.211
+Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
+10.10.1.3       98:17:3c:01:e8:f2       (Unknown)
+10.10.1.2       c8:a6:ef:42:b0:04       (Unknown)
+10.10.1.1       5c:47:5e:8c:0a:c2       Ring LLC
+10.10.1.6       d0:c9:07:03:ab:08       (Unknown)
+10.10.1.8       16:e2:7f:58:60:22       (Unknown: locally administered)
+10.10.1.9       c0:91:b9:fd:46:6f       Amazon Technologies Inc.
+10.10.1.4       06:3d:b4:20:54:cf       (Unknown: locally administered)
+10.10.1.10      14:ac:60:02:87:3c       CLOUD NETWORK TECHNOLOGY SINGAPORE PTE. LTD.
+10.10.1.200     70:85:c2:8d:5c:bb       ASRock Incorporation
+10.10.1.213     00:15:5d:01:15:01       Microsoft Corporation
+10.10.1.242     cc:28:aa:a6:c5:17       (Unknown)
+10.10.1.250     00:15:5d:01:15:04       Microsoft Corporation
+10.10.1.253     d8:ec:e5:72:9b:02       Zyxel Communications Corporation
+10.10.1.254     58:1d:d8:f6:21:50       Sagemcom Broadband SAS
+10.10.1.231     00:04:74:24:0a:aa       LEGRAND
+10.10.1.232     70:ee:50:5d:cd:8e       Netatmo
+10.10.1.5       d0:c9:07:a6:a2:48       (Unknown)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

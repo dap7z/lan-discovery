@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 /*
 * @Name:        		default-interface
 * @Author:              dap7z

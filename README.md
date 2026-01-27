@@ -9,7 +9,42 @@ $ node test.js
 
 ## Usage
 
-### Example
+### Example - Hybrid Scan (ARP Broadcast + Ping) - Recommended
+
+**Low-impact method**: ARP broadcast first to discover active devices, then ping only on discovered IPs.
+
+```javascript
+const LanDiscovery = require('lan-discovery');
+let discovery = new LanDiscovery({ verbose: false, timeout: 60 });
+
+// Listen to ARP discovery events
+discovery.on(LanDiscovery.EVENT_ARP_RESPONSE, (device) => {
+	console.log('ARP discovered:', device.ip, device.mac);
+});
+
+// Listen to ping and device info events
+discovery.on(LanDiscovery.EVENT_DEVICE_INFOS, (device) => {
+	console.log('Device info:', device); // { ip, mac, name, alive: true }
+});
+
+discovery.on(LanDiscovery.EVENT_DEVICES_INFOS, (devices) => {
+	console.log('All devices:', devices.length, 'found');
+});
+
+let myInterface = await discovery.getDefaultInterface();
+await discovery.startHybridScan({ 
+	networkInterface: myInterface,
+	timeout: 3000,
+	interval: 100
+});
+```
+
+**Note**: 
+  - **Linux/macOS/Windows**: If no administrator rights, throws an error.
+  - **Linux/macOS**: For ARP broadcast, use scan-arp command (sudo apt install arp-scan)
+  - **Windows**:  For ARP broadcast, use third_party/scan-arp.exe (packed in the application)
+
+### Example - Standard Scan (ICMP on all IPs), more impact on network but no administrator rights required
 
 ```javascript
 const LanDiscovery = require('lan-discovery');
@@ -20,7 +55,7 @@ discovery.on(LanDiscovery.EVENT_DEVICE_INFOS, (device) => {
 
 let myInterface = await discovery.getDefaultInterface();
 let tabIP = LanDiscovery.cidrRange(myInterface.cidr);
-discovery.startScan({ ipArrayToScan: tabIP });
+discovery.startScan({ ipArrayToScan: tabIP, interval: 100 });
 ```
 
 ---
@@ -30,6 +65,8 @@ EVENT_SCAN_RESPONSE : one device just responded to ping
 EVENT_DEVICE_INFOS : we juste retrieve one device informations
 EVENT_SCAN_COMPLETE : ping scan complete
 EVENT_DEVICES_INFOS : we retrieve all devices informations
+EVENT_ARP_RESPONSE : one device discovered via ARP broadcast (device = {ip, mac})
+EVENT_ARP_COMPLETE : ARP broadcast scan complete
 
 ---
 
@@ -83,15 +120,25 @@ Checks if a MAC address is valid
 
 ---
 
-### `async osPingCommand(ip: string): Promise<bool | null>`
 
-Ping an ip address with os ping command (slower but usefull to update the os arp table)
+### `async startScan(objParam): Promise<This>`
 
----
+Start the lan scan (Node ICMP Requests) and return promise resolving the network scan.
 
-### `startScan(): This`
+**Requirements:**
+- **All platforms (priority)**: `raw-socket` package for efficient ping session via net-ping
+  - The `raw-socket` package is included in dependencies and will be installed automatically
 
-Start the lan scan (Node ICMP Requests) and return the class object
+### `async startHybridScan(objParam): Promise<This>`
+
+Start hybrid scan: Instead of scanning all IPs, ARP broadcast first (L2 low impact), then ping (L3) only on discovered IPs.
+Return promise resolving the network scan.
+
+**Requirements:**
+- **All platforms (priority)**: `raw-socket` package for efficient ping session via net-ping
+  - The `raw-socket` package is included in dependencies and will be installed automatically
+- **Windows**: administrator rights
+- **Linux/macOS**: administrator rights, `arp-scan` command (`sudo apt install arp-scan`)
 
 ---
 
@@ -111,6 +158,9 @@ This librarie is heavyly inspired from theses modules :
 - use of ES8 keyword async/await
 - use class and class inheritance
 - use of event pattern
+
+On linux/macOS, we use arp-scan command available at https://github.com/royhills (Roy Hills)
+On windows, we use arp-scan.exe available at https://github.com/QbsuranAlang (Qbsuran Alang)
 
 ## License
 

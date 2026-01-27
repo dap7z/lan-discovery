@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 /**
  * Simple gateway detector for multiple platforms

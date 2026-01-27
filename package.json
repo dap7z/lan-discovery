@@ -1,6 +1,6 @@
 {
   "name": "lan-discovery",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Cross-platform local network library to scan lan and determine device informations (using ping and arp)",
   "author": "Damien Pointier",
   "license": "MIT",
@@ -23,11 +23,13 @@
   "dependencies": {
     "ipaddr.js": "^2.3.0",
     "net-ping": "^1.2.4",
-    "netmask": "^2.0.2",
-    "ping": "^1.0.0"
+    "netmask": "^2.0.2"
   },
   "overrides": {
-    "raw-socket": "npm:@justjam2013/raw-socket@^1.0.0"
+    "raw-socket": "npm:@justjam2013/raw-socket@^1.0.0",
+	"net-ping": {
+      "raw-socket": "npm:@justjam2013/raw-socket@1.0.0"
+    }
   },
   "repository": {
     "type": "git",
